@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -77,7 +78,13 @@ export default function PWAInstaller() {
         onClick={handleInstallClick}
         className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg flex items-center space-x-2 transition-all duration-200 transform hover:scale-105"
       >
-        <img src="/CraceLogo.svg" alt="Crace Logo" className="w-5 h-5" />
+        <Image
+          src="/CraceLogo.svg"
+          alt="Crace Logo"
+          width={20}
+          height={20}
+          className="w-5 h-5"
+        />
         <span>Install Crace</span>
       </button>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
-import { Search, Filter, X, Check } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, Filter, X } from "lucide-react";
 import { useDebounce } from "use-debounce";
 
 interface CryptoData {

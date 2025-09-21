@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -17,9 +17,6 @@ export const metadata: Metadata = {
   description:
     "Watch cryptocurrencies compete for the top market cap positions in real-time",
   manifest: "/manifest.json",
-  themeColor: "#1f2937",
-  viewport:
-    "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -69,6 +66,14 @@ export const metadata: Metadata = {
       { url: "/icons/ios/512.png", sizes: "512x512", type: "image/png" },
     ],
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#1f2937",
 };
 
 export default function RootLayout({
