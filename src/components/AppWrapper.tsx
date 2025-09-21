@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
+import { useRouter } from "next/navigation";
 import { RotateCcw, Settings } from "lucide-react";
 import Image from "next/image";
 import BarChartRace from "@/components/BarChartRace";
@@ -36,6 +37,8 @@ function AppContent({
   speed,
   handleSpeedChange,
 }: AppWrapperProps) {
+  const router = useRouter();
+
   // Stable serialize/deserialize functions
   const serializeRange = (value: [number, number]) => `${value[0]},${value[1]}`;
   const deserializeRange = (value: string) => {
@@ -46,6 +49,11 @@ function AppContent({
   const serializeArray = (value: string[]) => value.join(",");
   const deserializeArray = (value: string) =>
     value ? value.split(",").filter(Boolean) : [];
+
+  // Handle logo click - navigate to root and clear all params
+  const handleLogoClick = () => {
+    router.push("/");
+  };
 
   // URL state management
   const [selectedCategories, setSelectedCategories] = useUrlState<string[]>(
@@ -386,13 +394,19 @@ function AppContent({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="flex-shrink-0">
-                <Image
-                  src="/CraceLogo.svg"
-                  alt="Crace Logo"
-                  width={48}
-                  height={48}
-                  className="w-12 h-12"
-                />
+                <button
+                  onClick={handleLogoClick}
+                  className="hover:opacity-80 transition-opacity cursor-pointer"
+                  aria-label="Go to homepage"
+                >
+                  <Image
+                    src="/CraceLogo.svg"
+                    alt="Crace Logo"
+                    width={48}
+                    height={48}
+                    className="w-12 h-12"
+                  />
+                </button>
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white">Crace</h1>

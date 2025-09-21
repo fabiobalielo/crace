@@ -61,7 +61,11 @@ export const metadata: Metadata = {
       },
     ],
     apple: [
-      { url: "/icons/macos/crace-macos-icon.png", sizes: "512x512", type: "image/png" },
+      {
+        url: "/icons/macos/crace-macos-icon.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
       { url: "/icons/ios/180.png", sizes: "180x180", type: "image/png" },
       { url: "/icons/ios/192.png", sizes: "192x192", type: "image/png" },
       { url: "/icons/ios/512.png", sizes: "512x512", type: "image/png" },
