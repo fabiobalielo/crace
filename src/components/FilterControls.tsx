@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Search, Filter, X } from "lucide-react";
-import { useDebounce } from "use-debounce";
 
 interface CryptoData {
   id: number;
@@ -47,8 +46,6 @@ export default function FilterControls({
   onCategoriesChange,
 }: FilterControlsProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
-  const [debouncedSearchQuery] = useDebounce(localSearchQuery, 300);
   const [localMarketCapMin, setLocalMarketCapMin] = useState(
     marketCapRange[0].toString()
   );
@@ -77,14 +74,8 @@ export default function FilterControls({
     "Interoperability",
   ];
 
-  // Update parent when debounced search changes
-  useEffect(() => {
-    if (debouncedSearchQuery !== searchQuery) {
-      onSearchChange(debouncedSearchQuery);
-    }
-  }, [debouncedSearchQuery, searchQuery, onSearchChange]);
-
   // Sync local input values with prop values
+
   useEffect(() => {
     setLocalMarketCapMin(marketCapRange[0].toString());
     setLocalMarketCapMax(marketCapRange[1].toString());
@@ -173,14 +164,15 @@ export default function FilterControls({
         <input
           type="text"
           placeholder="Search cryptocurrencies..."
-          value={localSearchQuery}
-          onChange={(e) => setLocalSearchQuery(e.target.value)}
+          value={searchQuery}
+          onChange={(e) => onSearchChange(e.target.value)}
           className="w-full pl-10 pr-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none"
         />
-        {localSearchQuery && (
+        {searchQuery && (
           <button
-            onClick={() => setLocalSearchQuery("")}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+            onClick={() => onSearchChange("")}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+            title="Clear search"
           >
             <X className="w-4 h-4" />
           </button>

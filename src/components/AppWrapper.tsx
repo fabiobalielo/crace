@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useCallback, useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { RotateCcw, Settings } from "lucide-react";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import BarChartRace from "@/components/BarChartRace";
 import FilterControls from "@/components/FilterControls";
 import PWAInstaller from "@/components/PWAInstaller";
 import { useUrlState } from "@/hooks/useUrlState";
+import { useDebounce } from "use-debounce";
 
 interface CryptoData {
   id: number;
@@ -39,40 +40,57 @@ function AppContent({
 }: AppWrapperProps) {
   const router = useRouter();
 
-  // Stable serialize/deserialize functions
-  const serializeRange = (value: [number, number]) => `${value[0]},${value[1]}`;
-  const deserializeRange = (value: string) => {
+  // Memoized serialize/deserialize functions to prevent infinite re-renders
+  const serializeRange = useCallback(
+    (value: [number, number]) => `${value[0]},${value[1]}`,
+    []
+  );
+  const deserializeRange = useCallback((value: string) => {
     const [min, max] = value.split(",").map(Number);
     return [min || 0, max || Number.MAX_SAFE_INTEGER] as [number, number];
-  };
+  }, []);
 
-  const serializeArray = (value: string[]) => value.join(",");
-  const deserializeArray = (value: string) =>
-    value ? value.split(",").filter(Boolean) : [];
+  const serializeArray = useCallback((value: string[]) => value.join(","), []);
+  const deserializeArray = useCallback(
+    (value: string) => (value ? value.split(",").filter(Boolean) : []),
+    []
+  );
 
   // Handle logo click - navigate to root and clear all params
   const handleLogoClick = () => {
     router.push("/");
   };
 
+  // Stable default values to prevent infinite re-renders
+  const defaultMarketCapRange = useMemo<[number, number]>(
+    () => [0, Number.MAX_SAFE_INTEGER],
+    []
+  );
+  const defaultPriceRange = useMemo<[number, number]>(
+    () => [0, Number.MAX_SAFE_INTEGER],
+    []
+  );
+  const defaultCategories = useMemo<string[]>(() => [], []);
+
   // URL state management
   const [selectedCategories, setSelectedCategories] = useUrlState<string[]>(
     "categories",
-    [],
+    defaultCategories,
     serializeArray,
     deserializeArray
   );
 
-  const [searchQuery, setSearchQuery] = useUrlState<string>("search", "");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 300);
   const [marketCapRange, setMarketCapRange] = useUrlState<[number, number]>(
     "marketCap",
-    [0, Number.MAX_SAFE_INTEGER],
+    defaultMarketCapRange,
     serializeRange,
     deserializeRange
   );
   const [priceRange, setPriceRange] = useUrlState<[number, number]>(
     "price",
-    [0, Number.MAX_SAFE_INTEGER],
+    defaultPriceRange,
     serializeRange,
     deserializeRange
   );
@@ -308,13 +326,20 @@ function AppContent({
   // Filter and process crypto data
   const filteredCryptoData = allCryptoData
     .filter((crypto) => {
-      // Filter by search query
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        if (
-          !crypto.name.toLowerCase().includes(query) &&
-          !crypto.symbol.toLowerCase().includes(query)
-        ) {
+      // Filter by search query (using debounced value for performance)
+      if (debouncedSearchQuery) {
+        const query = debouncedSearchQuery.toLowerCase().trim();
+        const name = crypto.name.toLowerCase();
+        const symbol = crypto.symbol.toLowerCase();
+
+        // Search in name, symbol, and also check if query matches any part of the name
+        const matchesName = name.includes(query);
+        const matchesSymbol = symbol.includes(query);
+        const matchesPartialName = name
+          .split(" ")
+          .some((word) => word.startsWith(query));
+
+        if (!matchesName && !matchesSymbol && !matchesPartialName) {
           return false;
         }
       }
@@ -478,11 +503,11 @@ function AppContent({
                 <button
                   onClick={() => {
                     setSearchQuery("");
-                    setMarketCapRange([0, Number.MAX_SAFE_INTEGER]);
-                    setPriceRange([0, Number.MAX_SAFE_INTEGER]);
+                    setMarketCapRange(defaultMarketCapRange);
+                    setPriceRange(defaultPriceRange);
                     setShowGainers(false);
                     setShowLosers(false);
-                    setSelectedCategories([]);
+                    setSelectedCategories(defaultCategories);
                   }}
                   className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
                 >

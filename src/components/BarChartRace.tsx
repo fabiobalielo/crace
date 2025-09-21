@@ -45,13 +45,11 @@ export default function BarChartRace({
       // Store the current data as previous before updating
       setCurrentData((prevData) => {
         previousDataRef.current = prevData;
-        console.log("Updating chart data:", sortedData.length, "items");
-        if (sortedData.length > 0) {
+        console.log("Updating chart data:", data.length, "items");
+        if (data.length > 0) {
           console.log(
             "Top 3 cryptos:",
-            sortedData
-              .slice(0, 3)
-              .map((c) => `${c.symbol}: $${c.price.toFixed(2)}`)
+            data.slice(0, 3).map((c) => `${c.symbol}: $${c.price.toFixed(2)}`)
           );
         }
         return sortedData;
