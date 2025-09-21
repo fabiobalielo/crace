@@ -1,12 +1,16 @@
 {
-  "name": "nanostep",
+  "name": "crace",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy": "./deploy.sh",
+    "docker:build": "docker build -t crace .",
+    "docker:run": "docker run -p 3000:3000 crace",
+    "docker:test": "docker run --rm -p 3000:3000 crace"
   },
   "dependencies": {
     "framer-motion": "^12.23.16",
