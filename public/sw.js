@@ -5,6 +5,7 @@ const urlsToCache = [
   "/CraceLogo.svg",
   "/icons/android/android-launchericon-192-192.png",
   "/icons/android/android-launchericon-512-512.png",
+  "/icons/macos/crace-macos-icon.png",
   "/icons/ios/180.png",
   "/icons/ios/192.png",
   "/icons/ios/512.png",

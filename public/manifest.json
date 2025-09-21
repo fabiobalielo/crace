@@ -54,6 +54,12 @@
       "purpose": "any maskable"
     },
     {
+      "src": "/icons/macos/crace-macos-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "/icons/ios/180.png",
       "sizes": "180x180",
       "type": "image/png",
