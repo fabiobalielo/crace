@@ -21,7 +21,8 @@ export function useUrlState<T>(
 
       if (
         newValue === defaultValue ||
-        (Array.isArray(newValue) && newValue.length === 0)
+        (Array.isArray(newValue) && newValue.length === 0) ||
+        (typeof newValue === "string" && newValue.trim() === "")
       ) {
         params.delete(key);
       } else {
@@ -39,9 +40,14 @@ export function useUrlState<T>(
     const urlValue = searchParams.get(key);
     if (urlValue !== null) {
       const newState = deserialize(urlValue);
-      setState(newState);
+      // If the deserialized value is an empty string, reset to default
+      if (typeof newState === "string" && newState.trim() === "") {
+        setState(defaultValue);
+      } else {
+        setState(newState);
+      }
     }
-  }, [key, searchParams, deserialize]);
+  }, [key, searchParams, deserialize, defaultValue]);
 
   return [state, updateState] as const;
 }
