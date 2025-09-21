@@ -102,9 +102,7 @@ export default function BarChartRace({
   return (
     <div className="w-full bg-gray-900 rounded-lg">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-white">
-          Crypto Market Cap Race
-        </h2>
+        <h2 className="text-2xl font-bold text-white">Crace</h2>
         <div className="text-sm text-gray-400">
           Live • {currentData.length} of {totalCount} cryptocurrencies
         </div>

@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { RotateCcw, Settings } from "lucide-react";
 import BarChartRace from "@/components/BarChartRace";
 import FilterControls from "@/components/FilterControls";
+import PWAInstaller from "@/components/PWAInstaller";
 import { useUrlState } from "@/hooks/useUrlState";
 
 interface CryptoData {
@@ -435,17 +436,26 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-900">
+      <PWAInstaller />
       {/* Header */}
       <header className="bg-gray-800 shadow-lg sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-white">
-                🚀 Crypto Market Cap Race
-              </h1>
-              <p className="text-gray-400 mt-1">
-                Watch cryptocurrencies compete for the top market cap positions
-              </p>
+            <div className="flex items-center space-x-4">
+              <div className="flex-shrink-0">
+                <img
+                  src="/CraceLogo.svg"
+                  alt="Crace Logo"
+                  className="w-12 h-12"
+                />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-white">Crace</h1>
+                <p className="text-gray-400 mt-1">
+                  Watch cryptocurrencies compete for the top market cap
+                  positions
+                </p>
+              </div>
             </div>
 
             {/* Controls */}
