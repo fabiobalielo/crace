@@ -1,6 +1,6 @@
 # 🚀 Crypto Market Cap Race
 
-A fun and interactive bar chart race visualization showing cryptocurrency market cap rankings in real-time. Built with Next.js, TypeScript, Tailwind CSS, and Framer Motion.
+A chart race visualization showing cryptocurrency market cap rankings in real-time. Built with Next.js, TypeScript, Tailwind CSS, and Framer Motion.
 
 ## Features
 
